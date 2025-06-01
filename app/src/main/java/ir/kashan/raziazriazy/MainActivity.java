@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setBuiltInZoomControls(false);
         webView.setWebViewClient(new GeoWebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -62,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     public class GeoWebChromeClient extends android.webkit.WebChromeClient {
         @Override
-        public void onGeolocationPermissionsShowPrompt(final String origin,
-                                                       final GeolocationPermissions.Callback callback) {
+        public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
             callback.invoke(origin, true, false);
         }
     }
@@ -71,8 +70,7 @@ public class MainActivity extends AppCompatActivity {
     public class GeoWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
+            return false;
         }
 
         Dialog loadingDialog = new Dialog(MainActivity.this);
