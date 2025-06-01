@@ -1,23 +1,14 @@
-package com.aterd.webview;
+package ir.kashan.raziazriazy;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintJob;
-import android.print.PrintManager;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
@@ -31,19 +22,10 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.Toast;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
-    final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     private int webViewPreviousState;
     private final int PAGE_STARTED = 0x1;
-    private final int PAGE_REDIRECTED = 0x2;
     private CoordinatorLayout rootView;
     private WebView webView;
 
