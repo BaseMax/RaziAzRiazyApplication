@@ -82,16 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-            if (isConnected()) {
-                final Snackbar snackBar = Snackbar.make(rootView, "onReceivedError : " + error.getDescription(), Snackbar.LENGTH_INDEFINITE);
-                snackBar.setAction("Reload", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        webView.loadUrl("javascript:window.location.reload( true )");
-                    }
-                });
-                snackBar.show();
-            } else {
+            if (!isConnected()) {
                 final Snackbar snackBar = Snackbar.make(rootView, "No Internet Connection ", Snackbar.LENGTH_INDEFINITE);
                 snackBar.setAction("Enable Data", new View.OnClickListener() {
                     @Override
@@ -128,10 +119,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
 	public void onBackPressed() {
-		if (webView.canGoBack()) {
-			webView.goBack();
-		} else {
-			super.onBackPressed();
-		}
+        super.onBackPressed();
 	}
 }
