@@ -10,18 +10,16 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
     private int webViewPreviousState;
@@ -47,22 +45,19 @@ public class MainActivity extends AppCompatActivity {
         webView.getSettings().setUseWideViewPort(true);
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
-
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.setWebViewClient(new GeoWebViewClient());
-
         webView.getSettings().setJavaScriptEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         webView.getSettings().setGeolocationEnabled(true);
         webView.setWebChromeClient(new GeoWebChromeClient());
-
-        webView.getSettings().setAppCacheEnabled(true);
         webView.getSettings().setDatabaseEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
-
         webView.getSettings().setGeolocationDatabasePath(getFilesDir().getPath());
-
-        webView.loadUrl("http://raziazriazy.ir/");
+        webView.loadUrl("https://raziazriazy.ir/");
     }
 
     public class GeoWebChromeClient extends android.webkit.WebChromeClient {
@@ -87,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
             webViewPreviousState = PAGE_STARTED;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             if (isConnected()) {
@@ -112,33 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 snackBar.show();
             }
             super.onReceivedError(view, request, error);
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        @Override
-        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-            if (isConnected()) {
-                final Snackbar snackBar = Snackbar.make(rootView, "HttpError : " + errorResponse.getReasonPhrase(), Snackbar.LENGTH_INDEFINITE);
-                snackBar.setAction("Reload", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        webView.loadUrl("javascript:window.location.reload( true )");
-                    }
-                });
-                snackBar.show();
-            } else {
-                final Snackbar snackBar = Snackbar.make(rootView, "No Internet Connection ", Snackbar.LENGTH_INDEFINITE);
-                snackBar.setAction("Enable Data", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), 0);
-                        webView.loadUrl("javascript:window.location.reload( true )");
-                        snackBar.dismiss();
-                    }
-                });
-                snackBar.show();
-            }
-            super.onReceivedHttpError(view, request, errorResponse);
         }
 
         @Override
